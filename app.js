@@ -35,6 +35,17 @@ app.get("/test", (req, res) => {
     });
 })
 
+app.get("/getCard", (req, res) => {
+    let {cardName} = req.query; // this gets the parameter idtest from the url query as a string
+    let query = `CALL Earl.get_card('${cardName}');`;
+    connection.query(query, function (error, results, fields) {
+        if (error) //error from db query
+            res.status(500).json(error);
+        else //it worked
+            res.json({"data": results[0]}); // wrap array in object to be parsed by unity
+    });
+})
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
